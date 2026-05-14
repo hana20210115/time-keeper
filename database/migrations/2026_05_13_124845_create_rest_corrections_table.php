@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attendance_corrections', function (Blueprint $table) {
+        Schema::create('rest_corrections', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('attendance_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->date('date');
+            $table->foreignId('attendance_correction_id')->constrained()->onDelete('cascade');
             $table->time('start');
             $table->time('end');
-            $table->text('reason');
-            $table->tinyInteger('status')->default(0); // 0 = 承認待ち」, 1 = 承認済み,
-
+            $table->tinyInteger('status')->default(0); // 0 = 承認待ち, 1 = 承認済み,
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attendance_corrections');
+        Schema::dropIfExists('rest_corrections');
     }
 };

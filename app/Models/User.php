@@ -30,6 +30,29 @@ class User extends Authenticatable
         ];
     }
 
+    const ADMIN = 0; // 管理者
+    const USER = 1; // 一般ユーザー
+
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ADMIN  ;
+    }
+
+    public function isUser(): bool
+    {
+        return $this->role === self::USER;
+    }
+
+    public function getRoleName()
+    {
+        if ($this->role === self::ADMIN) {
+            return '管理者';
+        } elseif ($this->role === self::USER) {
+            return '一般ユーザー';
+        }
+
+    }
+
     public function attendances()
     {
         return $this->hasMany(Attendance::class);

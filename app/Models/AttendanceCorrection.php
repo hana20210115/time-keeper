@@ -9,16 +9,25 @@ class AttendanceCorrection extends Model
     protected $fillable = [
         'user_id',
         'attendance_id',
-        'rest1_start',
-        'rest1_end',
-        'rest2_start',
-        'rest2_end',
         'date',
-        'modified_start',
-        'modified_end',
+        'start',
+        'end',
         'reason',
         'status',
     ];
+
+        const STATUS_PENDING = 0; // 承認待ち
+        const STATUS_APPROVED = 1; // 承認済み
+    
+    public function isPending()
+    {
+        return $this->status === self::STATUS_PENDING;
+    }
+    
+    public function isApproved()
+    {
+        return $this->status === self::STATUS_APPROVED;
+    }
 
     public function user()
     {
@@ -28,5 +37,10 @@ class AttendanceCorrection extends Model
     public function attendance()
     {
         return $this->belongsTo(Attendance::class);
+    }
+    
+    public function restCorrections()
+    {
+        return $this->hasMany(RestCorrection::class);
     }
 }
