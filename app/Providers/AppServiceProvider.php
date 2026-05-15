@@ -19,6 +19,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::composer('layout.app',function ($view) {
+            $currentStatus= 0;
+        
+
+
+        if(auth()->check()) {
+           $todayAttendance = Attendance::query()
+                ->where('user_id', auth()->id())
+                ->where('date', now()->toDateString())
+                ->first();
+
+            $currentStatus = $todayAttendance  ? $todayAttendance->status : 0;
+        
+            }
+
+            $view->with('currentStatus', $currentStatus);
+        });
     }
 }
