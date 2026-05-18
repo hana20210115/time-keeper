@@ -43,15 +43,7 @@ class User extends Authenticatable
         return $this->role === self::USER;
     }
 
-    public function getRoleName()
-    {
-        if ($this->role === self::ADMIN) {
-            return '管理者';
-        } elseif ($this->role === self::USER) {
-            return '一般ユーザー';
-        }
-
-    }
+    
 
     public function attendances()
     {
