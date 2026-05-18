@@ -1,54 +1,56 @@
 @extends('layouts.guest')
 
 @section('content')
+<div class="flex flex-col items-center pt-20 min-h-screen">
+    
+    <div class="w-full max-w-2xl px-6">
+        <h1 class="text-2xl font-bold text-center mb-12">会員登録</h1>
 
-    <div class="flex justify-center items-center mt-10">
-        <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-md border border-gray-200">
+        <form method="POST" action="{{ route('register') }}" novalidate onsubmit="this.querySelector('button[type=submit]').disabled=true;">
+            @csrf
 
-            <h1 class="text-2xl font-bold text-center mb-6">会員登録</h1>
-
-            <form method="POST" action="{{ route('register') }}">
-                @csrf
-
-                <div class="mb-4">
-                    <label for="name" class="block text-gray-700 text-sm font-bold mb-2">名前</label>
-                    <input id="name" type="text" name="name" value="{{ old('name') }}"  class="w-full border border-gray-300 rounded p-2">
-                    @error('name')
-                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="mb-4">
-                    <label for="email" class="block text-sm font-bold mb-2">メールアドレス</label>
-                    <input id="email" type="email" name="email" value="{{ old('email') }}" class="w-full border border-gray-300 rounded-md p-2">
-                    @error('email')
-                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="mb-4">
-                    <label for="password" class="block text-sm font-bold mb-2">パスワード</label>
-                    <input id="password" type="password" name="password" class="w-full border border-gray-300 rounded-md p-2">
-                    @error('password')
-                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="mb-8">
-                    <label for="password_confirmation" class="block text-sm font-bold mb-2">パスワード確認</label>
-                    <input id="password_confirmation" type="password" name="password_confirmation"class="w-full border border-gray-300 rounded p-2">
-                </div>
-
-                    <button type="submit"
-                    class="w-full bg-black text-white font-bold py-3 rounded hover:bg-gray-800">
-                    登録する
-                    </button>
+            <div class="mb-8">
+                <label for="name" class="block font-bold mb-2 text-base">名前</label>
+                <input id="name" type="text" name="name" value="{{ old('name') }}" class="w-full border border-gray-400 bg-white p-3 focus:outline-none focus:border-gray-600">
                 
-            </form>
-
-            <div class="mt-6 text-center">
-                <a href="{{ route('login') }}" class="text-sm text-blue-500 hover:underline font-bold">ログインはこちら</a>
+                @error('name')
+                    <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                @enderror
             </div>
-        </div>
+
+            <div class="mb-8">
+                <label for="email" class="block font-bold mb-2 text-base">メールアドレス</label>
+                <input id="email" type="email" name="email" value="{{ old('email') }}" class="w-full border border-gray-400 bg-white p-3 focus:outline-none focus:border-gray-600">
+                
+                @error('email')
+                    <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-8">
+                <label for="password" class="block font-bold mb-2 text-base">パスワード</label>
+                <input id="password" type="password" name="password" required class="w-full border border-gray-400 bg-white p-3 focus:outline-none focus:border-gray-600">
+                
+                @error('password')
+                    <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-8">
+                <label for="password_confirmation" class="block font-bold mb-2 text-base">パスワード確認</label>
+                <input id="password_confirmation" type="password" name="password_confirmation" required class="w-full border border-gray-400 bg-white p-3 focus:outline-none focus:border-gray-600">
+            </div>
+
+            <button type="submit" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-3 transition mb-3">
+                登録する
+            </button>
+                
+            <div class="text-center">
+                <a href="{{ route('login') }}" class="text-blue-500 hover:text-blue-700 text-xs font-bold">
+                    ログインはこちら
+                </a>
+            </div>
+        </form>
     </div>
+</div>
 @endsection
