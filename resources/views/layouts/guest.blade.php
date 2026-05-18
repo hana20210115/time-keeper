@@ -6,7 +6,7 @@
     <title>time-keeper</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-50">
+<body>
     <header class="bg-black py-5 px-10">
         <div class="max-w-7xl mx-auto">
             <x-header-logo />
