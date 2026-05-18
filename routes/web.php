@@ -2,8 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/home', function () {
-    return '<h1>メール認証完了！マイページへようこそ！</h1>';})->name('home');
 
+Route::get('/', function () {
+    return view('auth.login');
+});
+
+Route::get('/attendance', function () {
+    return view('attendance.index');
+})->name('attendance.index');
 
 

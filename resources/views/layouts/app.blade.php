@@ -17,7 +17,7 @@
                 @auth
                     @if($currentStatus !== 3)
                     
-                        <li><a href="#"             class="hover:text-gray-300">勤怠</a></li>
+                        <li><a href="#" class="hover:text-gray-300">勤怠</a></li>
                         <li><a href="#" class="hover:text-gray-300">勤怠一覧</a></li>
                         <li><a href="#" class="hover:text-gray-300">申請</a></li>
                     @else
