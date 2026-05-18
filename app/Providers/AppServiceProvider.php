@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Providers;
-
+use Laravel\Fortify\Fortify;
+use App\Models\Attendance;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('layout.app',function ($view) {
+        View::composer('layouts.app',function ($view) {
             $currentStatus= 0;
         
 
@@ -36,5 +38,9 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('currentStatus', $currentStatus);
         });
+    
+    
+    
+    
     }
 }
