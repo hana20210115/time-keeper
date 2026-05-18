@@ -15,7 +15,7 @@
         <nav>
             <ul class="flex items-center space-x-8 font-bold">
                 @auth
-                        <li><a href="" class="hover:text-gray-300">勤怠一覧</a></li>
+                        <li><a href="#" class="hover:text-gray-300">勤怠一覧</a></li>
                         <li><a href="#" class="hover:text-gray-300">スタッフ一覧</a></li>
                         <li><a href="#" class="hover:text-gray-300">申請一覧</a></li>
         
