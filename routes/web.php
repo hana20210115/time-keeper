@@ -1,14 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AttendanceController;
+
+Route::get('/', function () {return view('auth.login');});
 
 
-Route::get('/', function () {
-    return view('auth.login');
-});
-
-Route::get('/attendance', function () {
-    return view('attendance.index');
-})->name('attendance.index');
-
+Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+Route::post('/attendance/start', [AttendanceController::class, 'start'])->name('attendance.start');
+Route::post('/attendance/end', [AttendanceController::class, 'end'])->name('attendance.end');
+Route::get('/attendance/detail/{id}', [AttendanceController::class, 'detail'])->name('attendance.detail');
+Route::post('/attendance/rest/start', [AttendanceController::class, 'restStart'])->name('attendance.rest.start');
+Route::post('/attendance/rest/end', [AttendanceController::class, 'restEnd'])->name('attendance.rest.end');
 

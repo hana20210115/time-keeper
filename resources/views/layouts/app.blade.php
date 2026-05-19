@@ -38,7 +38,7 @@
         </nav>
     </header>
 
-    <main class="max-w-7xl mx-auto py-10 px-4">
+    <main class="max-full mx-auto py-10 px-4 bg-gray-100">
         @yield('content')
     </main>
 
