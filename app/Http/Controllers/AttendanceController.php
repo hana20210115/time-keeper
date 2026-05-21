@@ -12,6 +12,7 @@ class AttendanceController extends Controller
 {
     public function index()
     {
+        
         $user = Auth::user();
         $today = carbon::today();
 
@@ -120,17 +121,109 @@ class AttendanceController extends Controller
     
                 return redirect()->route('attendance.index')->with('success', '退勤しました。');
             }
-    
+    }
+        public function list(Request $request)
+    {
+       
+        $monthInput = $request->query('month', Carbon::now()->format('Y-m'));
+        $targetDate = Carbon::parse($monthInput . '-01');
+
+        $firstDay = $targetDate->copy()->startOfMonth();
+        $lastDay = $targetDate->copy()->endOfMonth();
+
+       
+        $attendance = Attendance::with('rests')->where('user_id', Auth::id())
+            ->whereBetween('date', [$firstDay->format('Y-m-d'), $lastDay->format('Y-m-d')])
+            ->get()
+            ->keyBy('date');
+
+        $calendarData = [];
+        $weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+
+
+        for ($date = $firstDay->copy(); $date->lte($lastDay); $date->addDay()) 
+                {
+            $dateString = $date->format('Y-m-d');
+            $record = $attendance->get($dateString); 
+
+            $startTime = '';
+            $endTime = '';
+            $breakTimeDisplay = '';
+            $totalTimeDisplay = '';
+
+            if ($record) {
+                $startTime = $record->start_time ? Carbon::parse($record->start_time)->format('H:i') : '';
+                $endTime = $record->end_time ? Carbon::parse($record->end_time)->format('H:i') : '';
+
+
+                $totalBreakMinutes = 0;
+                foreach ($record->rests as $rest) {
+                    if ($rest->start && $rest->end) {
+                        $breakStart = Carbon::parse($rest->start);
+                        $breakEnd = Carbon::parse($rest->end);
+                        $totalBreakMinutes += $breakStart->diffInMinutes($breakEnd);
+                    }
+                }
+
+                if ($totalBreakMinutes > 0) {
+                    $breakHours = floor($totalBreakMinutes / 60);
+                    $breakMins = $totalBreakMinutes % 60;
+                    $breakTimeDisplay = sprintf('%02d:%02d', $breakHours, $breakMins);
+                } elseif ($record->start_time && $record->end_time) {
+                    $breakTimeDisplay = '00:00';
+                }
+
+
+                if ($record->start_time && $record->end_time) {
+                    $attendanceStart = Carbon::parse($record->start_time);
+                    $attendanceEnd = Carbon::parse($record->end_time);
+                    $totalStayMinutes = $attendanceStart->diffInMinutes($attendanceEnd);
+                    $workMinutes = $totalStayMinutes - $totalBreakMinutes;
+
+                    if ($workMinutes > 0) {
+                        $workHours = floor($workMinutes / 60);
+                        $workMins = $workMinutes % 60;
+                        $totalTimeDisplay = sprintf('%02d:%02d', $workHours, $workMins);
+                    } else {
+                        $totalTimeDisplay = '00:00';
+                    }
+                }
+            }
+
+            $calendarData[] = [
+                'date_display' => $date->format('m/d') . '(' . $weekdays[$date->dayOfWeek] . ')',
+                'start_time'   => $startTime,
+                'end_time'     => $endTime,
+                'break_time'   => $breakTimeDisplay,
+                'total_time'   => $totalTimeDisplay,
+                'id'           => $record ? $record->id : null,
+            ];
         }
 
 
 
+        $currentMonth = $firstDay->format('Y/m');
+        $prevMonth = $firstDay->copy()->subMonth()->format('Y-m');
+        $nextMonth = $firstDay->copy()->addMonth()->format('Y-m');
 
 
+        return view('attendance.list', compact('calendarData', 'currentMonth', 'prevMonth', 'nextMonth'));
+    }
 
+    public function detail($id)
+    {
+
+        $attendance = Attendance::with('rests')->findOrFail($id);
+
+        return view('attendance.detail', compact('attendance'));
+
+    }
 
 
 
 
 
 }
+
+
+
