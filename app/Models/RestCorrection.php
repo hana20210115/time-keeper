@@ -8,6 +8,7 @@ class RestCorrection extends Model
 {
     protected $fillable = [
         'attendance_correction_id',
+        'rest_id',
         'start',
         'end',
         'status',
