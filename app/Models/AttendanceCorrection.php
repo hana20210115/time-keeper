@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class AttendanceCorrection extends Model
 {
@@ -44,5 +45,18 @@ class AttendanceCorrection extends Model
         return $this->hasMany(RestCorrection::class);
     }
 
+    public function getUserNameAttribute()
+    {
+        return $this->user->name;
+    }
     
+    public function getFormattedDateAttribute()
+    {
+        return Carbon::parse($this->attendance->date)->format('Y/m/d');
+    }
+
+    public function getFormattedCreatedAtAttribute()
+    {
+        return $this->created_at->format('Y/m/d');
+    }
 }

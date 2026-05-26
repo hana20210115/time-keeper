@@ -19,10 +19,10 @@
                     
                         <li><a href="/attendance" class="hover:text-gray-300">勤怠</a></li>
                         <li><a href="/attendance/list" class="hover:text-gray-300">勤怠一覧</a></li>
-                        <li><a href="#" class="hover:text-gray-300">申請</a></li>
+                        <li><a href="/stamp_correction_request/list" class="hover:text-gray-300">申請</a></li>
                     @else
                         <li><a href="/attendance/list" class="hover:text-gray-300">今月の出勤一覧</a></li>
-                        <li><a href="#" class="hover:text-gray-300">申請一覧</a></li>
+                        <li><a href="/stamp_correction_request/list" class="hover:text-gray-300">申請一覧</a></li>
                     
                     
                     @endif

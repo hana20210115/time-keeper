@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCorrectionRequest;
 use App\Models\Attendance;
 use App\Models\RestCorrection;
 use App\Models\AttendanceCorrection;
+use Illuminate\Http\Request;
 
 class AttendanceCorrectionController extends Controller
 {
@@ -63,5 +64,31 @@ class AttendanceCorrectionController extends Controller
             }
         }
          return redirect()->route('attendance.detail', ['id' => $id])->with('success', '修正申請を送信しました。');
+    }
+
+
+    public function index(Request $request)
+    {
+        $userId = auth()->id();
+
+        $activeTab =$request->query('tab','pending');
+
+        $pendingCorrections = AttendanceCorrection::with(['user','attendance'])
+            ->where('user_id',$userId)
+            ->where('status',AttendanceCorrection::STATUS_PENDING)
+            ->orderBy('created_at','desc')
+            ->get();
+
+        $approvedCorrections = AttendanceCorrection::with(['user','attendance'])
+            ->where('user_id',$userId)
+            ->where('status',AttendanceCorrection::STATUS_APPROVED)
+            ->orderBy('created_at','desc')
+            ->get();
+
+        return view('correction.list',compact('pendingCorrections','approvedCorrections','activeTab'));
+
+
+
+
     }
 }
