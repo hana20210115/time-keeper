@@ -18,32 +18,34 @@
             <a href="{{ route('attendance.list', ['month' => $nextMonth]) }}" class="text-gray-500 hover:text-black transition">翌月 →</a>
         </div>
 
-        <div class="bg-white p-8 rounded-md shadow-md">
+        <div class="bg-white py-8 rounded-md shadow-md overflow-hidden">
             <table class="w-full text-center border-collapse">
                 <thead>
                     <tr class="border-b-2 border-gray-300 text-gray-600">
-                        <th class="py-3 font-medium">日付</th>
+                        <th class="py-3 font-medium pl-6">日付</th>
                         <th class="py-3 font-medium">出勤</th>
                         <th class="py-3 font-medium">退勤</th>
                         <th class="py-3 font-medium">休憩</th>
                         <th class="py-3 font-medium">合計</th>
-                        <th class="py-3 font-medium">詳細</th>
+                        <th class="py-3 font-medium pr-6">詳細</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($calendarData as $data)
-                        <tr class="border-b border-gray-200 hover:bg-gray-50 transition">
-                            <td class="py-4">{{ $data['date_display'] }}</td>
+                        <tr class="border-b border-gray-200 hover:bg-gray-50 transition last:border-b-0">
+                            <td class="py-4 pl-6">{{ $data['date_display'] }}</td>
                             <td class="py-4">{{ $data['start_time'] }}</td>
                             <td class="py-4">{{ $data['end_time'] }}</td>
                             <td class="py-4">{{ $data['break_time'] }}</td>
                             <td class="py-4">{{ $data['total_time'] }}</td>
+                            
                             @if (!empty($data['id']))
-                                <td class="py-4">
+                                <td class="py-4 pr-6">
                                     <a href="{{ route('attendance.detail', ['id' => $data['id']]) }}" class="font-bold hover:underline">詳細</a>
                                 </td>
+                            @else
+                                <td class="py-4 pr-6"></td> 
                             @endif
-                             
                         </tr>
                     @endforeach
                 </tbody>

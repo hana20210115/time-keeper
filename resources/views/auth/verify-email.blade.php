@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="flex flex-col items-center justify-center min-h-[70vh] text-center px-4">
+<div class="flex-1 flex flex-col items-center justify-center text-center">
     <div class="mb-10 text-lg md:text-xl font-bold leading-relaxed text-gray-800">
         登録していただいたメールアドレスに認証メールを送信しました。<br>
         メール認証を完了してください。

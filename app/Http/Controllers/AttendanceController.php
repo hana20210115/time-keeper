@@ -7,6 +7,7 @@ use App\Models\Attendance;
 use App\Models\Rest;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Models\AttendanceCorrection;
 
 class AttendanceController extends Controller
 {
@@ -79,7 +80,7 @@ class AttendanceController extends Controller
     }
 
     public function restEnd()
-    {   
+    {
         $user = Auth::user();
         $today = Carbon::today();
 
@@ -104,7 +105,7 @@ class AttendanceController extends Controller
         return redirect()->route('attendance.index')->with('success', '休憩を終了しました。');
     }
 
-        public function end()
+    public function end()
         {
             $user = Auth::user();
             $today = Carbon::today();
@@ -122,7 +123,7 @@ class AttendanceController extends Controller
                 return redirect()->route('attendance.index')->with('success', '退勤しました。');
             }
     }
-        public function list(Request $request)
+    public function list(Request $request)
     {
        
         $monthInput = $request->query('month', Carbon::now()->format('Y-m'));
@@ -210,15 +211,53 @@ class AttendanceController extends Controller
         return view('attendance.list', compact('calendarData', 'currentMonth', 'prevMonth', 'nextMonth'));
     }
 
+
+
     public function detail($id)
     {
-
         $attendance = Attendance::with('rests')->findOrFail($id);
+        $correction = AttendanceCorrection::where('attendance_id', $id)->latest()->first();
 
-        return view('attendance.detail', compact('attendance'));
+        $isPending = $correction && $correction->status === AttendanceCorrection::STATUS_PENDING;
+        $reason = $correction ? $correction->reason : '';
 
+        
+        $restsData = $attendance->rests->map(function ($rest, $index) {
+            return [
+                'id'    => $rest->id, 
+                'label' => $index === 0 ? '休憩' : '休憩' . ($index + 1),
+                'start' => Carbon::parse($rest->start)->format('H:i'),
+                'end'   => Carbon::parse($rest->end)->format('H:i'),
+            ];
+        })->toArray();
+
+
+        if (!$isPending) {
+            $count = count($restsData);
+            $restsData[] = [
+                'id'    => 'new', 
+                'label' => $count === 0 ? '休憩' : '休憩' . ($count + 1),
+                'start' => '', 
+                'end'   => '', 
+            ];
+        }
+
+        $viewData = [
+            'id'         => $attendance->id,
+            'name'       => $attendance->user->name,
+            'date_year'  => Carbon::parse($attendance->date)->format('Y年'),
+            'date_md'    => Carbon::parse($attendance->date)->format('n月j日'),
+            'start_time' => Carbon::parse($attendance->start_time)->format('H:i'),
+            'end_time'   => Carbon::parse($attendance->end_time)->format('H:i'),
+            'is_pending' => $isPending,
+            'reason'     => $reason,
+            'rests'      => $restsData,
+        ];
+
+        return view('attendance.detail', compact('viewData'));
     }
 
+    
 
 
 
