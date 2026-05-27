@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password','role'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -30,17 +30,17 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    const ADMIN = 0; // 管理者
-    const USER = 1; // 一般ユーザー
+    const ADMIN = 1; // 管理者
+    const USER = 0; // 一般ユーザー
 
     public function isAdmin(): bool
     {
-        return $this->role === self::ADMIN  ;
+        return $this->role == self::ADMIN  ;
     }
 
     public function isUser(): bool
     {
-        return $this->role === self::USER;
+        return $this->role == self::USER;
     }
 
     

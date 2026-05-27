@@ -4,7 +4,7 @@
 <div class="flex flex-col items-center pt-20 min-h-screen">
     
     <div class="w-full max-w-2xl px-6">
-        <h2 class="text-xl font-bold text-center mb-12">ログイン</h2>
+        <h1 class="text-xl font-bold text-center mb-12">ログイン</h1>
 
         <form method="POST" action="{{ route('login') }}" novalidate onsubmit="this.querySelector('button[type=submit]').disabled=true;">
             @csrf
