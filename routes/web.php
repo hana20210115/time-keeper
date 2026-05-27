@@ -20,3 +20,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/stamp_correction_request/list',[AttendanceCorrectionController::class,'index'])->name('stamp_correction_request.list');
     
 });
+
+Route::middleware('guest')->get('/admin/login', function () {
+    
+    return view('admin.login');
+})->name('admin.login');
