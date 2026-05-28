@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceCorrectionController;
+use App\Http\Controllers\AdminAttendanceController;
+
 
 Route::get('/', function () {return view('auth.login');});
 
@@ -22,6 +24,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware('guest')->get('/admin/login', function () {
-    
     return view('admin.login');
 })->name('admin.login');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/admin/attendance/list/{date?}', [AdminAttendanceController::class, 'index'])
+        ->name('admin.attendance_list');
+    Route::get('/admin/attendance/detail/{id}',[AdminAttendanceController::class, 'show'])->name('admin.attendance_detail');
+});
