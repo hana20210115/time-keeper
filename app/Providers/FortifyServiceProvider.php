@@ -13,6 +13,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -61,5 +63,33 @@ class FortifyServiceProvider extends ServiceProvider
             \Laravel\Fortify\Contracts\LoginResponse::class,
             \App\Http\Responses\LoginResponse::class
         );
+
+        Fortify::authenticateUsing(function (Request $request) {
+        
+            $user = User::where('email', $request->email)->first();
+
+        
+            if ($user && Hash::check($request->password, $user->password)) {
+
+        
+                $loginType = $request->input('login_type');
+
+        
+                if ($loginType === 'admin' && $user->role != 1) {
+                    return null;
+                }
+
+        
+                if ($loginType === 'user' && $user->role != 0) {
+                    return null;
+                }
+
+        
+                return $user;
+            }
+
+            
+            return null;
+        });
     }
 }

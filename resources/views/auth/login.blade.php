@@ -8,6 +8,7 @@
 
         <form method="POST" action="{{ route('login') }}" novalidate onsubmit="this.querySelector('button[type=submit]').disabled=true;">
             @csrf
+            <input type="hidden" name="login_type" value="user">
 
             <div class="mb-8">
                 <label for="email" class="block font-bold mb-2 text-base">メールアドレス</label>
