@@ -53,7 +53,8 @@ class AdminAttendanceController extends Controller
 
         $correction = AttendanceCorrection::where('attendance_id' , $id)->latest()->first();
 
-        $isPending = $correction &&  $correction === AttendanceCorrection::STATUS_PENDING;
+
+        $isPending = $correction &&  $correction->status == AttendanceCorrection::STATUS_PENDING;
 
         $isLocked = $isPending || session()->has('success');
 
