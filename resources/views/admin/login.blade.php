@@ -9,6 +9,7 @@
 
     <form method="POST" action="{{route('login')}}" novalidate>
         @csrf
+        <input type="hidden" name="login_type" value="admin">
 
         <div class="mb-6">
             <label for="email" class="block text-sm font-bold mb-2">
