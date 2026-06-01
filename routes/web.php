@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceCorrectionController;
 use App\Http\Controllers\AdminAttendanceController;
+use App\Http\Controllers\AdminStaffController;
 
 
 Route::get('/', function () {return view('auth.login');});
@@ -32,4 +33,6 @@ Route::middleware('auth')->group(function () {
         ->name('admin.attendance_list');
     Route::get('/admin/attendance/detail/{id}',[AdminAttendanceController::class, 'show'])->name('admin.attendance_detail');
     Route::post('/admin/attendance/detail/{id}/update',[AdminAttendanceController::class,'update'])->name('admin.attendance_update');
+    Route::get('/admin/staff/list',[AdminStaffController::class,'index'])->name('admin.staff_list');
+    Route::get('/admin/staff/detail/{id}',[AdminStaffController::class,'show'])->name('admin.staff_detail');
 });
