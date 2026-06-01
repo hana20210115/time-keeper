@@ -35,19 +35,19 @@
                         <div class="flex items-center gap-6">
                             @if($isLocked)
                                 <div class="w-36 text-center text-sm font-medium tracking-wider text-black">
-                                    {{ $attendance->start_time ? \Carbon\Carbon::parse($attendance->start_time)->format('H:i') : '' }}
+                                    {{ $attendance->formatted_start_time }}
                                 </div>
                                 <span class="text-black font-bold">〜</span>
                                 <div class="w-36 text-center text-sm font-medium tracking-wider text-black">
-                                    {{ $attendance->end_time ? \Carbon\Carbon::parse($attendance->end_time)->format('H:i') : '' }}
+                                    {{ $attendance->formatted_end_time }}
                                 </div>
                             @else
                                 <input type="time" name="start_time" 
-                                    value="{{ old('start_time', $attendance->start_time ? \Carbon\Carbon::parse($attendance->start_time)->format('H:i') : '') }}"
+                                    value="{{ old('start_time', $attendance->formatted_start_time) }}"
                                     class="border border-gray-200 rounded px-4 py-2 w-36 text-center text-sm font-medium tracking-wider focus:ring-black focus:border-black [&::-webkit-calendar-picker-indicator]:hidden">
                                 <span class="text-black font-bold">〜</span>
                                 <input type="time" name="end_time" 
-                                    value="{{ old('end_time', $attendance->end_time ? \Carbon\Carbon::parse($attendance->end_time)->format('H:i') : '') }}"
+                                    value="{{ old('end_time', $attendance->formatted_end_time) }}"
                                     class="border border-gray-200 rounded px-4 py-2 w-36 text-center text-sm font-medium tracking-wider focus:ring-black focus:border-black [&::-webkit-calendar-picker-indicator]:hidden">
                             @endif
                         </div>
@@ -66,19 +66,19 @@
                         <div class="flex items-center gap-6">
                             @if($isLocked)
                                 <div class="w-36 text-center text-sm font-medium tracking-wider text-black">
-                                    {{ $rest->start ? \Carbon\Carbon::parse($rest->start)->format('H:i') : '' }}
+                                    {{ $rest->formatted_start }}
                                 </div>
                                 <span class="text-black font-bold">〜</span>
                                 <div class="w-36 text-center text-sm font-medium tracking-wider text-black">
-                                    {{ $rest->end ? \Carbon\Carbon::parse($rest->end)->format('H:i') : '' }}
+                                    {{ $rest->formatted_end }}
                                 </div>
                             @else
                                 <input type="time" name="rests[{{ $rest->id }}][start]" 
-                                    value="{{ old('rests.'.$rest->id.'.start', $rest->start ? \Carbon\Carbon::parse($rest->start)->format('H:i') : '') }}"
+                                    value="{{ old('rests.'.$rest->id.'.start', $rest->formatted_start) }}"
                                     class="border border-gray-200 rounded px-4 py-2 w-36 text-center text-sm font-medium tracking-wider focus:ring-black focus:border-black [&::-webkit-calendar-picker-indicator]:hidden">
                                 <span class="text-black font-bold">〜</span>
                                 <input type="time" name="rests[{{ $rest->id }}][end]" 
-                                    value="{{ old('rests.'.$rest->id.'.end', $rest->end ? \Carbon\Carbon::parse($rest->end)->format('H:i') : '') }}"
+                                    value="{{ old('rests.'.$rest->id.'.end', $rest->formatted_end) }}"
                                     class="border border-gray-200 rounded px-4 py-2 w-36 text-center text-sm font-medium tracking-wider focus:ring-black focus:border-black [&::-webkit-calendar-picker-indicator]:hidden">
                             @endif
                         </div>

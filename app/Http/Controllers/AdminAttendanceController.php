@@ -48,20 +48,25 @@ class AdminAttendanceController extends Controller
 
     public function show($id)
     {
-
         $attendance = Attendance::with(['user', 'rests'])->findOrFail($id);
 
-        $correction = AttendanceCorrection::where('attendance_id' , $id)->latest()->first();
-
-
-        $isPending = $correction &&  $correction->status == AttendanceCorrection::STATUS_PENDING;
-
+        $correction = AttendanceCorrection::where('attendance_id', $id)->latest()->first();
+        $isPending = $correction && $correction->status == AttendanceCorrection::STATUS_PENDING;
         $isLocked = $isPending || session()->has('success');
 
-        $attendance->formatted_date_year =Carbon::parse($attendance->date)->format('Y年');
-        $attendance->formatted_date_month_day = Carbon::parse($attendance->date)->format('n月j月');
 
-        return view('admin.attendance_detail', compact('attendance','correction','isPending','isLocked'));
+        $attendance->formatted_date_year = Carbon::parse($attendance->date)->format('Y年');
+        $attendance->formatted_date_month_day = Carbon::parse($attendance->date)->format('n月j日');
+        $attendance->formatted_start_time = $attendance->start_time ? Carbon::parse($attendance->start_time)->format('H:i') : '';
+        $attendance->formatted_end_time = $attendance->end_time ? Carbon::parse($attendance->end_time)->format('H:i') : '';
+
+
+        foreach ($attendance->rests as $rest) {
+            $rest->formatted_start = $rest->start ? Carbon::parse($rest->start)->format('H:i') : '';
+            $rest->formatted_end = $rest->end ? Carbon::parse($rest->end)->format('H:i') : '';
+        }
+
+        return view('admin.attendance_detail', compact('attendance', 'isPending', 'isLocked'));
     }
 
 
