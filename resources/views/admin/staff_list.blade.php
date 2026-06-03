@@ -27,15 +27,15 @@
                             {{ $staff->email }}
                         </td>
                         <td class="py-6">
-                            <a href="#" class="text-black font-bold tracking-widest text-sm hover:text-gra          y-500 transition-colors">詳細
+                            <a href="{{ route('admin.staff_detail', ['id' => $staff->id]) }}" class="text-black font-bold tracking-widest text-sm hover:text-gray-500 transition-colors">詳細
                             </a>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <tb colspan="3" class="py-10 text-gray-400 text-sm tracking-widest text-center">
+                        <td colspan="3" class="py-10 text-gray-400 text-sm tracking-widest text-center">
                             スタッフが登録されていません
-                        </tb>
+                        </td>
                     </tr>
                     @endforelse
                 </tbody>
