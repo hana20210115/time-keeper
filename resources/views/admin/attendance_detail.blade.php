@@ -42,11 +42,15 @@
                                     {{ $attendance->formatted_end_time }}
                                 </div>
                             @else
-                                <input type="time" name="start_time" 
+                                <input type="{{ old('start_time', $attendance->formatted_start_time) ? 'time' : 'text' }}" 
+                                    onfocus="this.type='time'" onblur="if(!this.value) this.type='text'"
+                                    name="start_time" 
                                     value="{{ old('start_time', $attendance->formatted_start_time) }}"
                                     class="border border-gray-200 rounded px-4 py-2 w-36 text-center text-sm font-medium tracking-wider focus:ring-black focus:border-black [&::-webkit-calendar-picker-indicator]:hidden">
                                 <span class="text-black font-bold">〜</span>
-                                <input type="time" name="end_time" 
+                                <input type="{{ old('end_time', $attendance->formatted_end_time) ? 'time' : 'text' }}" 
+                                    onfocus="this.type='time'" onblur="if(!this.value) this.type='text'"
+                                    name="end_time" 
                                     value="{{ old('end_time', $attendance->formatted_end_time) }}"
                                     class="border border-gray-200 rounded px-4 py-2 w-36 text-center text-sm font-medium tracking-wider focus:ring-black focus:border-black [&::-webkit-calendar-picker-indicator]:hidden">
                             @endif
@@ -57,7 +61,7 @@
                     </div>
                 </div>
 
-                @forelse($attendance->rests as $index => $rest)
+                @foreach($attendance->rests as $index => $rest)
                 <div class="flex border-b border-gray-200 px-10 py-7 items-start">
                     <div class="w-[30%] text-gray-700 font-medium tracking-[0.2em] text-sm {{ $isLocked ? '' : 'pt-3' }}">
                         休憩{{ $index > 0 ? $index + 1 : '' }}
@@ -73,11 +77,15 @@
                                     {{ $rest->formatted_end }}
                                 </div>
                             @else
-                                <input type="time" name="rests[{{ $rest->id }}][start]" 
+                                <input type="{{ old('rests.'.$rest->id.'.start', $rest->formatted_start) ? 'time' : 'text' }}" 
+                                    onfocus="this.type='time'" onblur="if(!this.value) this.type='text'"
+                                    name="rests[{{ $rest->id }}][start]" 
                                     value="{{ old('rests.'.$rest->id.'.start', $rest->formatted_start) }}"
                                     class="border border-gray-200 rounded px-4 py-2 w-36 text-center text-sm font-medium tracking-wider focus:ring-black focus:border-black [&::-webkit-calendar-picker-indicator]:hidden">
                                 <span class="text-black font-bold">〜</span>
-                                <input type="time" name="rests[{{ $rest->id }}][end]" 
+                                <input type="{{ old('rests.'.$rest->id.'.end', $rest->formatted_end) ? 'time' : 'text' }}" 
+                                    onfocus="this.type='time'" onblur="if(!this.value) this.type='text'"
+                                    name="rests[{{ $rest->id }}][end]" 
                                     value="{{ old('rests.'.$rest->id.'.end', $rest->formatted_end) }}"
                                     class="border border-gray-200 rounded px-4 py-2 w-36 text-center text-sm font-medium tracking-wider focus:ring-black focus:border-black [&::-webkit-calendar-picker-indicator]:hidden">
                             @endif
@@ -87,12 +95,41 @@
                         @endif
                     </div>
                 </div>
-                @empty
+                @endforeach
+
+                @if($isLocked && $attendance->rests->isEmpty())
                 <div class="flex border-b border-gray-200 px-10 py-7 items-center">
                     <div class="w-[30%] text-gray-700 font-medium tracking-[0.2em] text-sm">休憩</div>
                     <div class="w-[70%] text-gray-400 text-sm tracking-widest">休憩記録はありません</div>
                 </div>
-                @endforelse
+                @endif
+
+                @if(!$isLocked)
+                @php $nextRestNum = $attendance->rests->count() + 1; @endphp
+                <div class="flex border-b border-gray-200 px-10 py-7 items-start">
+                    <div class="w-[30%] text-gray-700 font-medium tracking-[0.2em] text-sm pt-3">
+                        休憩{{ $nextRestNum > 1 ? $nextRestNum : '' }}
+                    </div>
+                    <div class="w-[70%]">
+                        <div class="flex items-center gap-6">
+                            <input type="{{ old('new_rest.start') ? 'time' : 'text' }}" 
+                                onfocus="this.type='time'" onblur="if(!this.value) this.type='text'"
+                                name="new_rest[start]" 
+                                value="{{ old('new_rest.start') }}"
+                                class="border border-gray-200 rounded px-4 py-2 w-36 text-center text-sm font-medium tracking-wider focus:ring-black focus:border-black [&::-webkit-calendar-picker-indicator]:hidden">
+                            <span class="text-black font-bold">〜</span>
+                            <input type="{{ old('new_rest.end') ? 'time' : 'text' }}" 
+                                onfocus="this.type='time'" onblur="if(!this.value) this.type='text'"
+                                name="new_rest[end]" 
+                                value="{{ old('new_rest.end') }}"
+                                class="border border-gray-200 rounded px-4 py-2 w-36 text-center text-sm font-medium tracking-wider focus:ring-black focus:border-black [&::-webkit-calendar-picker-indicator]:hidden">
+                        </div>
+                        @if($errors->has('new_rest.start') || $errors->has('new_rest.end'))
+                            <p class="text-red-500 text-sm mt-3">{{ $errors->first('new_rest.start') ?: $errors->first('new_rest.end') }}</p>
+                        @endif
+                    </div>
+                </div>
+                @endif
                 
                 <div class="flex px-10 py-7 items-start">
                     <div class="w-[30%] text-gray-700 font-medium tracking-[0.2em] text-sm {{ $isLocked ? '' : 'pt-3' }}">備考</div>

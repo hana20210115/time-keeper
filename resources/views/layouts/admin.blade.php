@@ -34,7 +34,7 @@
         </nav>
     </header>
 
-    <main class=" mx-auto py-10 px-4 bg-gray-100">
+    <main class=" w-fll">
         @yield('content')
     </main>
 

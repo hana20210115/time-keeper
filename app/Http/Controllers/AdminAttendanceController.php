@@ -13,37 +13,66 @@ class AdminAttendanceController extends Controller
 {
     public function index($date = null)
     {
-
         if($date){
             $currentDate = Carbon::parse($date);
         } else{
             $currentDate = Carbon::today();
         }
 
-
         $prevDate = $currentDate->copy()->subDay()->format('Y-m-d');
         $nextDate = $currentDate->copy()->addDay()->format('Y-m-d');
 
 
-        $attendances = Attendance::with('user')
+        $attendances = Attendance::with(['user', 'rests'])
             ->whereDate('date', $currentDate->format('Y-m-d'))
             ->get();
 
-
         $attendances->transform(function ($attendance) {
-
             $attendance->formatted_start_time = $attendance->start_time ? Carbon::parse($attendance->start_time)->format('H:i') : '';
             $attendance->formatted_end_time   = $attendance->end_time ? Carbon::parse($attendance->end_time)->format('H:i') : '';
-            $attendance->formatted_rest_time  = $attendance->rest_time ? Carbon::parse($attendance->rest_time)->format('H:i') : '';
-            $attendance->formatted_work_time  = $attendance->work_time ? Carbon::parse($attendance->work_time)->format('H:i') : '';
+            
+
+            $totalBreakMinutes = 0;
+            foreach ($attendance->rests as $rest) {
+                if ($rest->start && $rest->end) {
+                    $breakStart = Carbon::parse($rest->start);
+                    $breakEnd = Carbon::parse($rest->end);
+                    $totalBreakMinutes += $breakStart->diffInMinutes($breakEnd);
+                }
+            }
+
+            if ($totalBreakMinutes > 0) {
+                $breakHours = floor($totalBreakMinutes / 60);
+                $breakMins = $totalBreakMinutes % 60;
+                $attendance->formatted_rest_time = sprintf('%02d:%02d', $breakHours, $breakMins);
+            } elseif ($attendance->start_time && $attendance->end_time) {
+                $attendance->formatted_rest_time = '00:00';
+            } else {
+                $attendance->formatted_rest_time = '';
+            }
+
+            if ($attendance->start_time && $attendance->end_time) {
+                $attendanceStart = Carbon::parse($attendance->start_time);
+                $attendanceEnd = Carbon::parse($attendance->end_time);
+                $totalStayMinutes = $attendanceStart->diffInMinutes($attendanceEnd);
+                $workMinutes = $totalStayMinutes - $totalBreakMinutes;
+
+                if ($workMinutes > 0) {
+                    $workHours = floor($workMinutes / 60);
+                    $workMins = $workMinutes % 60;
+                    $attendance->formatted_work_time = sprintf('%02d:%02d', $workHours, $workMins);
+                } else {
+                    $attendance->formatted_work_time = '00:00';
+                }
+            } else {
+                $attendance->formatted_work_time = '';
+            }
             
             return $attendance;
         });
 
-
         return view('admin.attendance_list', compact('currentDate', 'prevDate', 'nextDate', 'attendances'));
     }
-
 
 
     public function show($id)
@@ -54,19 +83,20 @@ class AdminAttendanceController extends Controller
         $isPending = $correction && $correction->status == AttendanceCorrection::STATUS_PENDING;
         $isLocked = $isPending || session()->has('success');
 
-
         $attendance->formatted_date_year = Carbon::parse($attendance->date)->format('Y年');
         $attendance->formatted_date_month_day = Carbon::parse($attendance->date)->format('n月j日');
         $attendance->formatted_start_time = $attendance->start_time ? Carbon::parse($attendance->start_time)->format('H:i') : '';
         $attendance->formatted_end_time = $attendance->end_time ? Carbon::parse($attendance->end_time)->format('H:i') : '';
-
 
         foreach ($attendance->rests as $rest) {
             $rest->formatted_start = $rest->start ? Carbon::parse($rest->start)->format('H:i') : '';
             $rest->formatted_end = $rest->end ? Carbon::parse($rest->end)->format('H:i') : '';
         }
 
-        return view('admin.attendance_detail', compact('attendance', 'isPending', 'isLocked'));
+    
+        $nextRestNum = $attendance->rests->count() + 1;
+
+        return view('admin.attendance_detail', compact('attendance', 'isPending', 'isLocked', 'nextRestNum'));
     }
 
 
