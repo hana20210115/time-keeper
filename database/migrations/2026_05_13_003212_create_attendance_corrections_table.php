@@ -19,7 +19,7 @@ return new class extends Migration
             $table->time('start');
             $table->time('end');
             $table->text('reason');
-            $table->tinyInteger('status')->default(0); // 0 = 承認待ち」, 1 = 承認済み,
+            $table->tinyInteger('status')->default(0); // 0 = 承認待ち, 1 = 承認済み,
 
             $table->timestamps();
         });
