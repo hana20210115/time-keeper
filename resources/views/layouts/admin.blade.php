@@ -34,7 +34,7 @@
         </nav>
     </header>
 
-    <main class=" w-fll">
+    <main class=" w-fll bg-gray-100">
         @yield('content')
     </main>
 

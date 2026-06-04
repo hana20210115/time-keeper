@@ -28,7 +28,7 @@ Route::middleware('guest')->get('/admin/login', function () {
     return view('admin.login');
 })->name('admin.login');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/attendance/list/{date?}', [AdminAttendanceController::class, 'index'])
         ->name('admin.attendance_list');
     Route::get('/admin/attendance/detail/{id}',[AdminAttendanceController::class, 'show'])->name('admin.attendance_detail');

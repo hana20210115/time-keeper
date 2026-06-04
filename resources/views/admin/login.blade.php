@@ -1,7 +1,7 @@
 @extends('layouts.guest')
 
 @section('content')
-<div class="max-w-xl mx-auto w-full pt-16 px-4">
+<div class="max-w-xl mx-auto w-full  pt-16 px-4">
 
     <h1 class="text-2xl font-bold text-center mb-12 tracking-wider">
         管理者ログイン
