@@ -5,6 +5,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceCorrectionController;
 use App\Http\Controllers\AdminAttendanceController;
 use App\Http\Controllers\AdminStaffController;
+use App\Http\Controllers\AdminCorrectionController;
 
 
 Route::get('/', function () {return view('auth.login');});
@@ -37,4 +38,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/staff/detail/{id}',[AdminStaffController::class,'show'])->name('admin.staff_detail');
     Route::get('/admin/staff/detail/{id}/csv',[AdminStaffController::class,
     'exportCsv'])->name('admin.staff_detail_csv');
+    Route::get('/admin/stamp_correction_request/list',[AdminCorrectionController::class,'index'])->name('admin.correction_request_list');
 });

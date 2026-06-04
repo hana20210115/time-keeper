@@ -20,7 +20,7 @@
                         <li>
                             <a href="{{route('admin.staff_list')}}" class="hover:text-gray-300">スタッフ一覧</a></li>
                         <li>
-                            <a href="#" class="hover:text-gray-300">申請一覧</a></li>
+                            <a href="{{ route('admin.correction_request_list')}}" class="hover:text-gray-300">申請一覧</a></li>
         
                     
                         <li>
