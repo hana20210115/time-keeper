@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="bg-[#f5f5f5] min-h-screen py-12 px-4 font-sans">
+<div class="bg-gray-100 min-h-screen py-12 px-4 font-sans">
     <div class="max-w-4xl mx-auto">
         
         <div class="flex items-center mb-8">

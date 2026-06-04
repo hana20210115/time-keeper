@@ -1,17 +1,17 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="bg-white min-h-screen py-12 px-4 font-sans">
+<div class="bg-gray-100 min-h-screen py-12 px-4 font-sans">
     <div class="max-w-5xl mx-auto">
         
         <div class="flex items-center mb-8">
             <div class="w-1.5 h-6 bg-black mr-4"></div>
             <h1 class="text-xl font-bold text-black tracking-widest">スタッフ一覧</h1>
         </div>
-        <div class="bg-white rounded border-gray-200 overflow-hidden">
+        <div class="bg-white rounded border border-gray-200 overflow-hidden">
             <table class="w-full text-center border-collapse">
                 <thead>
-                    <tr class="border-b border-gray 200">
+                    <tr class="border-b border-gray-200">
                         <th class="py-6 font-medium text-gray-700 tracking-[0.2em] text-sm w-1/3">名前</th>
                         <th class="py-6 font-medium text-gray-700 tracking-[0.2em] text-sm w-1/3">メールアドレス</th>
                         <th class="py-6 font-medium text-gray-700 tracking-[0.2em] text-sm w-1/3">月次勤怠</th>
