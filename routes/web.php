@@ -39,4 +39,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/staff/detail/{id}/csv',[AdminStaffController::class,
     'exportCsv'])->name('admin.staff_detail_csv');
     Route::get('/admin/stamp_correction_request/list',[AdminCorrectionController::class,'index'])->name('admin.correction_request_list');
+    Route::get('/admin/stamp_correction_request/detail/{id}',[AdminCorrectionController::class,'show'])->name('admin.correction_request_detail');
+    Route::post('/admin/stamp_correction_request/approve/{id}',[AdminCorrectionController::class,'approve'])->name('admin.correction_request_approve');
 });

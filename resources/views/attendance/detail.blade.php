@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('content')
@@ -54,9 +55,17 @@
                                 {{ $rest['start'] }} 〜 {{ $rest['end'] }}
                             @else
                                 <div class="flex items-center space-x-6">
-                                    <input type="{{ empty($rest['start']) && empty(old('rests.'.$rest['id'].'.start')) ? 'text' : 'time' }}" name="rests[{{ $rest['id'] }}][start]" value="{{ old('rests.'.$rest['id'].'.start', $rest['start']) }}" onfocus="this.type='time'" onblur="if(!this.value) this.type='text'" class="border border-gray-200 rounded px-4 py-2 w-32 text-center focus:outline-none focus:ring-1 focus:ring-black">
+                                    <input type="{{ empty($rest['start']) && empty(old('rests.'.$rest['id'].'.start')) ? 'text' : 'time' }}" 
+                                           name="rests[{{ $rest['id'] }}][start]" 
+                                           value="{{ old('rests.'.$rest['id'].'.start', $rest['start']) }}" 
+                                           onfocus="this.type='time'" onblur="if(!this.value) this.type='text'" 
+                                           class="border border-gray-200 rounded px-4 py-2 w-32 text-center focus:outline-none focus:ring-1 focus:ring-black">
                                     <span class="font-bold">〜</span>
-                                    <input type="{{ empty($rest['end']) && empty(old('rests.'.$rest['id'].'.end')) ? 'text' : 'time' }}" name="rests[{{ $rest['id'] }}][end]" value="{{ old('rests.'.$rest['id'].'.end', $rest['end']) }}" onfocus="this.type='time'" onblur="if(!this.value) this.type='text'" class="border border-gray-200 rounded px-4 py-2 w-32 text-center focus:outline-none focus:ring-1 focus:ring-black">
+                                    <input type="{{ empty($rest['end']) && empty(old('rests.'.$rest['id'].'.end')) ? 'text' : 'time' }}" 
+                                           name="rests[{{ $rest['id'] }}][end]" 
+                                           value="{{ old('rests.'.$rest['id'].'.end', $rest['end']) }}" 
+                                           onfocus="this.type='time'" onblur="if(!this.value) this.type='text'" 
+                                           class="border border-gray-200 rounded px-4 py-2 w-32 text-center focus:outline-none focus:ring-1 focus:ring-black">
                                 </div>
                                 @if($errors->has('rests.' . $rest['id'] . '.start') || $errors->has('rests.' . $rest['id'] . '.end'))
                                     <p class="text-red-500 text-sm mt-2 font-medium">

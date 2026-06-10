@@ -12,7 +12,7 @@ class AdminStaffController extends Controller
 {
     public function index()
     {
-        $staffs= User::where('role',0)->get();
+        $staffs= User::all();
         return view('admin.staff_list',compact('staffs'));
     }
 
