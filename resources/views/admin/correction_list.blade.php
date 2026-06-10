@@ -51,7 +51,7 @@
                             {{ $correction->formatted_apply_date }}
                         </td>
                         <td class="py-6">
-                            <a href="#" class="text-black font-bold tracking-widest text-sm hover:text-gray-500 transition-colors">
+                            <a href="{{route('admin.correction_request_detail',['id' => $correction->id])}}" class="text-black font-bold tracking-widest text-sm hover:text-gray-500 transition-colors">
                                 詳細
                             </a>
                         </td>
