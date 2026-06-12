@@ -6,6 +6,7 @@ use App\Http\Controllers\AttendanceCorrectionController;
 use App\Http\Controllers\AdminAttendanceController;
 use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AdminCorrectionController;
+use App\Http\Controllers\ReportController;
 
 
 Route::get('/', function () {return view('auth.login');});
@@ -22,6 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/attendance/rest/end', [AttendanceController::class, 'restEnd'])->name('attendance.rest.end');
     Route::get('/attendance/list', [AttendanceController::class, 'list'])->name('attendance.list'); 
     Route::get('/stamp_correction_request/list',[AttendanceCorrectionController::class,'index'])->name('stamp_correction_request.list');
+    Route::get('/attendance/report', [ReportController::class, 'index'])->name('attendance.report');
     
 });
 
