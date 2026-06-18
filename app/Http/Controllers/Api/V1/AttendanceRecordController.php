@@ -3,36 +3,75 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Request\API\V1\StoreAttendanceRecordRequest;
 use Illuminate\Http\Request;
+use App\Http\Resources\AttendanceRecordResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Models\Attendance;
 
 class AttendanceRecordController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 勤怠レコードの一覧を検索・絞り込み・ページネーション付きで取得する
+     * 
+     * @param Request $request
+     * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(Request $request): AnonymousResourceCollection
     {
-        //
+        $query = Attendance::query();
+
+        if ($request->has('user_id')){
+            $query->where('user_id',$request->user_id);
+        }
+        if ($request->has('date')){
+            $query->where('date',$request->date);
+        }
+        if ($request->has('month')){
+            $query->where('date','like',$request->month . '%');
+        }
+        $perPage = $request->input('per_page',20);
+        $records = $query->paginate($perPage);
+
+        return AttendanceRecordResource::collection($records);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(StoreAttendanceRecordRequest $request)
+    {   
+        $validated = $request->Validated();
+
+        $attendance = $request->user()->attendance()->create($validated);
+
+        $attendance->load(['rests', 'attendanceCorrections']);
+
+        return (new AttendanceRecordResource($attendance))
+            response()
+            satStatusCode(201);
+
+        
     }
 
     /**
-     * Display the specified resource.
+     * 指定された勤怠レコードの詳細（休憩・修正申請含む）を取得する
+     * 
+     * @param int $id
+     * @return AttendanceRecordResource
      */
-    public function show(string $id)
+    public function show(int $id):AttendanceRecordResource
     {
-        //
+        $attendance = Attendance::findOrFail($id);
+
+        $attendance -> load(['rests','attendanceCorrections']);
+
+        return new AttendanceRecordResource($attendance);
+        
     }
 
     /**
-     * Update the specified resource in storage.
+     * 
      */
     public function update(Request $request, string $id)
     {
