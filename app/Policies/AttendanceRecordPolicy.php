@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\AttendanceRecord;
+use App\Models\Attendance;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -33,19 +33,31 @@ class AttendanceRecordPolicy
     }
 
     /**
-     * Determine whether the user can update the model.
+     * 更新の認可
+     * 
+     * @param \App\Models\User $user
+     * @param \App\Models\Attendance $attendance
+     * @return \Illuminate\Auth\Access\Response
      */
-    public function update(User $user, AttendanceRecord $attendanceRecord): bool
+    public function update(User $user, Attendance $attendance): Response
     {
-        return false;
+        return $user->id === $attendance->user_id
+        ? Response::allow()
+        :Response::deny('この操作を実行する権限がありません。');
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * 削除の認可
+     * 
+     * @param \App\Models\User $user
+     * @param \App\Models\Attendance $attendance
+     * @return \Illuminate\Auth\Access\Response
      */
-    public function delete(User $user, AttendanceRecord $attendanceRecord): bool
+    public function delete(User $user, Attendance $attendance): Response
     {
-        return false;
+        return $user->id === $attendance->user_id
+        ? Response::allow()
+        : Response::deny('この操作を実行する権限がありません');
     }
 
     /**

@@ -12,7 +12,7 @@ class IndexAttendanceRecordRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,11 @@ class IndexAttendanceRecordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => ['nullable','integer','exists:users,id'],
+            'date'  => ['nullable','date'],
+            'month' => ['nullable','date_format:Y-m'],
+            'per_page' =>['nullable','integer','min:1','max:100'],
         ];
+        
     }
 }

@@ -18,7 +18,10 @@ class AttendanceRecordResource extends JsonResource
             'id' =>$this->id,
             'user_id' => $this->user_id,
             'date' => $this->date,
+            'start_time' => $this->start_time,
+            'end_time' => $this->end_time,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'status' => $this->status,
             'rests' => $this->whenLoaded('rests'),
             'attendance_corrections' => $this->whenLoaded('attendanceCorrections'),
         ];
