@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Providers;
-use Laravel\Fortify\Fortify;
+
 use App\Models\Attendance;
-use Illuminate\Support\Facades\View;
+use App\Policies\AttendanceRecordPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Fortify\Fortify;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,32 +18,29 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
-
+    
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
-        View::composer('layouts.app',function ($view) {
-            $currentStatus= 0;
+
+        Gate::policy(Attendance::class, AttendanceRecordPolicy::class);
+
+
+        View::composer('layouts.app', function ($view) {
+            $currentStatus = 0;
         
+            if(auth()->check()) {
+               $todayAttendance = Attendance::query()
+                    ->where('user_id', auth()->id())
+                    ->where('date', now()->toDateString())
+                    ->first();
 
-
-        if(auth()->check()) {
-           $todayAttendance = Attendance::query()
-                ->where('user_id', auth()->id())
-                ->where('date', now()->toDateString())
-                ->first();
-
-            $currentStatus = $todayAttendance  ? $todayAttendance->status : 0;
-        
+                $currentStatus = $todayAttendance ? $todayAttendance->status : 0;
             }
 
             $view->with('currentStatus', $currentStatus);
         });
-    
-    
-    
-    
     }
 }

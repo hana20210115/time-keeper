@@ -1,0 +1,28 @@
+[90m= [39m[34;4mApp\Models\User[39;24m {#8660
+    [34mid[39m: [35m1[39m,
+    [34mname[39m: [32m"[39m[32mユーザー1[39m[32m"[39m,
+    [34memail[39m: [32m"[39m[32muser1@example.com[39m[32m"[39m,
+    [34memail_verified_at[39m: [32m"[39m[32m2026-06-05 10:55:01[39m[32m"[39m,
+    #[33mpassword[39m: [32m"[39m\$[32m2y[39m\$[32m12[39m\$[32mUBUcM/QxnUM0CUkLiS3VJOfs7.5CEIAGGdJAHdLn.eteFsRu55olG[39m[32m"[39m,
+    [34mtwo_factor_secret[39m: [36mnull[39m,
+    [34mtwo_factor_recovery_codes[39m: [36mnull[39m,
+    [34mtwo_factor_confirmed_at[39m: [36mnull[39m,
+    [34mrole[39m: [35m0[39m,
+    #[33mremember_token[39m: [36mnull[39m,
+    [34mcreated_at[39m: [32m"[39m[32m2026-06-05 10:55:01[39m[32m"[39m,
+    [34mupdated_at[39m: [32m"[39m[32m2026-06-05 10:55:01[39m[32m"[39m,
+  }
+[90m= [39m[34;4mApp\Models\User[39;24m {#8701
+    [34mid[39m: [35m1[39m,
+    [34mname[39m: [32m"[39m[32mユーザー1[39m[32m"[39m,
+    [34memail[39m: [32m"[39m[32muser1@example.com[39m[32m"[39m,
+    [34memail_verified_at[39m: [32m"[39m[32m2026-06-05 10:55:01[39m[32m"[39m,
+    #[33mpassword[39m: [32m"[39m\$[32m2y[39m\$[32m12[39m\$[32mUBUcM/QxnUM0CUkLiS3VJOfs7.5CEIAGGdJAHdLn.eteFsRu55olG[39m[32m"[39m,
+    [34mtwo_factor_secret[39m: [36mnull[39m,
+    [34mtwo_factor_recovery_codes[39m: [36mnull[39m,
+    [34mtwo_factor_confirmed_at[39m: [36mnull[39m,
+    [34mrole[39m: [35m0[39m,
+    #[33mremember_token[39m: [36mnull[39m,
+    [34mcreated_at[39m: [32m"[39m[32m2026-06-05 10:55:01[39m[32m"[39m,
+    [34mupdated_at[39m: [32m"[39m[32m2026-06-05 10:55:01[39m[32m"[39m,
+  }
