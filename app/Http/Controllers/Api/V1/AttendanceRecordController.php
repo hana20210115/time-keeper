@@ -76,11 +76,15 @@ class AttendanceRecordController extends Controller
      * 指定された勤怠レコードの詳細（休憩・修正申請含む）を取得する
      * 
      * @param int $id
-     * @return AttendanceRecordResource
+     * @return 
      */
-    public function show(int $id):AttendanceRecordResource
+    public function show(int $id)
     {
-        $attendance = Attendance::findOrFail($id);
+        $attendance = Attendance::find($id);
+
+        if (!$attendance){
+            return response()->json(['error'=> '勤怠情報が見つかりませんでした。'],404);
+        }
 
         $attendance -> load(['rests','attendanceCorrections']);
 

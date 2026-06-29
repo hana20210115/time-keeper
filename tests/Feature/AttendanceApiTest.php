@@ -135,4 +135,90 @@ class AttendanceApiTest extends TestCase
         $response->assertStatus(403);
     }
 
+    /**
+     * 勤怠詳細取得テスト
+     ** 認証済みユーザーが指定IDのGETリクエストを送った際該当する勤怠の詳細データが200 OKで返ることを検証する。
+     *@return void
+     */
+
+    public function test_GET_勤怠詳細がJSONで取得できる():void
+    {
+        $user = User::first();
+
+        $attendance = Attendance::where('user_id',$user->id)->first();
+
+        $response = $this->actingAs($user,'sanctum')->getJson("/api/v1/attendance-records/{$attendance->id}");
+
+        $response->assertStatus(200)
+        ->assertJsonStructure([
+            'data'=>['id','user_id','date','start_time','end_time','status']
+        ]);
+    }
+
+    /**
+     * 存在しないIDの警告テスト
+     ** 存在しないIDにGETを送った際404 Not Foundと、指定された日本語エラーメッセージが返ることを検証する。
+     * @return void
+    */
+
+    public function test_GET_存在しないIDでは404とエラーJSONが返る(): void
+    {
+        $user = User::first();
+
+        $response = $this->actingAs($user,'sanctum')->getJson('/api/v1/attendance-records/99999');
+
+        $response->assertStatus(404)->assertJson([
+            'error' => '勤怠情報が見つかりませんでした。'
+        ]);
+    }
+
+    /**
+     * 勤怠更新テスト
+     * *認証済みユーザーが自分の勤怠データをPUTリクエストで更新した際、200 OKが返り、データベースの値が正しく書き換わることを検証する。
+     * 
+     * @return void
+     */
+
+    public function test_PUT_勤怠が更新される():void
+    {
+        $user = User::first();
+
+        $attendance = Attendance::where('user_id',$user->id)->first();
+
+        $tomorrow = now()->addDay()->format('Y-m-d');
+
+        $response = $this->actingAs($user,'sanctum')->putJson("/api/v1/attendance-records/{$attendance->id}",[
+            'date'=> $tomorrow,
+            'start_time' => '08:00:00',
+            'end_time' => '19:00:00',
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('attendances',[
+            'id' => $attendance->id,
+            'end_time' => '19:00:00',
+        ]);
+    }
+
+    /**
+     * 勤怠削除テスト
+     ** 認証済みユーザーが勤怠データをDELETEリクエストで削除した際、204 No Contentが返り、データベースからデータが完全に消えることを検証する。
+     * @return void
+     */
+    
+    public function test_DELETE_勤怠が削除される():void
+    {
+        $user = User::first();
+        $attendance = Attendance::where('user_id',$user->id)->first();
+
+        $response = $this->actingAs($user,'sanctum')->deleteJson("/api/v1/attendance-records/{$attendance->id}");
+
+        $response->assertStatus(204);
+
+        $this->assertDatabaseMissing('attendances',[
+            'id' => $attendance->id,
+        ]);
+    }
+
 }
