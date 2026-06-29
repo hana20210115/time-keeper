@@ -33,7 +33,7 @@ class UpdateAttendanceRecordRequest extends FormRequest
                     return $query->where('user_id',auth()->id());
                 })->ignore($attendanceId),
             ],
-            'start_time' =>['nullable','date_format:Hi:s'],
+            'start_time' =>['nullable','date_format:H:i:s'],
             'end_time' => ['nullable','date_format:H:i:s','after:start_time'],
         ];
     }
