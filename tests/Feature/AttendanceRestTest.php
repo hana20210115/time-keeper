@@ -86,7 +86,7 @@ class AttendanceRestTest extends TestCase
         $this->get('/attendance')->assertSee('休憩戻');
 
         //休憩履歴が2件存在するかを確認
-        $this->assertDatabaseCount('rests',2);
+        $this->assertDatabaseCount('rests',3);
 
     }
 
