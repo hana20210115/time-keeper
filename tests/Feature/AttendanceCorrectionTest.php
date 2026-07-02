@@ -202,4 +202,5 @@ class AttendanceCorrectionTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('勤怠詳細');
     }
+    
 }
