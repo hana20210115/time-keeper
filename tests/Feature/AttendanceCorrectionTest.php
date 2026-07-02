@@ -105,7 +105,7 @@ class AttendanceCorrectionTest extends TestCase
             'reason' => ''
         ]);
 
-        // 💡 実際のエラーメッセージ「記入して下さい」に合わせました
+        
         $response->assertSessionHasErrors(['reason' => '備考を記入して下さい']);
     }
 
@@ -118,7 +118,7 @@ class AttendanceCorrectionTest extends TestCase
         $this->actingAs($this->user);
 
         $response = $this->post('/attendance/correction/'.$this->attendance->id, [
-            'date' => '2026-07-01', // 💡 日付を追加（これがないとバリデーションで弾かれて保存されない）
+            'date' => '2026-07-01', 
             'start_time' => '11:00',
             'end_time' => '18:00',
             'rests' => [
@@ -129,7 +129,7 @@ class AttendanceCorrectionTest extends TestCase
             ],
             'reason' => '打刻忘れ'
         ]);
-        //$response->dumpSession();
+        
 
         $this->assertDatabaseHas('attendance_corrections', [
             'attendance_id' => $this->attendance->id,
