@@ -11,8 +11,10 @@ use App\Http\Requests\StoreCorrectionRequest;
 
 class AdminAttendanceController extends Controller
 {
-    public function index($date = null)
+    public function index(Request $request)
     {
+        $date = $request->query('date');
+
         if($date){
             $currentDate = Carbon::parse($date);
         } else{

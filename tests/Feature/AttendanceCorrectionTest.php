@@ -168,6 +168,7 @@ class AttendanceCorrectionTest extends TestCase
     public function test_一般ユーザーの申請一覧画面の承認済みに承認された申請が表示される(): void
     {
         $this->actingAs($this->user);
+        
 
         AttendanceCorrection::create([
             'attendance_id' => $this->attendance->id,
@@ -202,4 +203,5 @@ class AttendanceCorrectionTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('勤怠詳細');
     }
+
 }
