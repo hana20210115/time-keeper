@@ -32,7 +32,7 @@ Route::middleware('guest')->get('/admin/login', function () {
 })->name('admin.login');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/admin/attendance/list/{date?}', [AdminAttendanceController::class, 'index'])
+    Route::get('/admin/attendance/list/', [AdminAttendanceController::class, 'index'])
         ->name('admin.attendance_list');
     Route::get('/admin/attendance/detail/{id}',[AdminAttendanceController::class, 'show'])->name('admin.attendance_detail');
     Route::post('/admin/attendance/detail/{id}/update',[AdminAttendanceController::class,'update'])->name('admin.attendance_update');
