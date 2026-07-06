@@ -25,40 +25,29 @@ class DummyDataSeeder extends Seeder
 
         $now = Carbon::now();
 
-
-        // ユーザー1 過去5ヶ月分, 月17日出勤 開発プロセスに定義してある意図的データ
-        $this->generateUserAttendances($user1->id, 5, 17, true, $now);
-
-        // ユーザー2 過去3ヶ月分, 月10日出勤
-        $this->generateUserAttendances($user2->id, 3, 10, false, $now);
-
-        // ユーザー3 過去1ヶ月分, 月5日出勤
-        $this->generateUserAttendances($user3->id, 1, 5, false, $now);
+        $this->generateUserAttendances($user1->id, 5, 15, 17, true, $now);
+        $this->generateUserAttendances($user2->id, 3, 10, 10, false, $now);
+        $this->generateUserAttendances($user3->id, 1, 5, 5, false, $now);
     }
 
-
-    private function generateUserAttendances($userId, $monthsBack, $daysPerMonth, $useComplexPattern, $now)
+    private function generateUserAttendances($userId, $monthsBack, $pastDays, $currentDays, $useComplexPattern, $now)
     {
-
         for ($i = $monthsBack; $i >= 1; $i--) {
             $pastMonth = $now->copy()->subMonths($i)->startOfMonth();
             $daysAdded = 0;
 
             for($day = 1; $day <= $pastMonth->daysInMonth; $day++) {
                 $currentDay = $pastMonth->copy()->addDays($day - 1);
-                if($currentDay->isWeekday() && $daysAdded < $daysPerMonth) {
-                    
+                if($currentDay->isWeekday() && $daysAdded < $pastDays) {
                     $this->createAttendanceRecord($userId, $currentDay, '09:00', '18:00');
                     $daysAdded++;
                 }
             }
         }
 
-
         $targetMonth = $now->copy()->startOfMonth();
         $daysAdded = 0;
         
-
         $complexPatterns = array_merge(
             array_fill(0, 10, ['start' => '09:00', 'end' => '18:00']),
             array_fill(0, 3,  ['start' => '09:00', 'end' => '20:00']),
@@ -69,8 +58,7 @@ class DummyDataSeeder extends Seeder
 
         for($day = 1; $day <= $targetMonth->daysInMonth; $day++) {
             $currentDay = $targetMonth->copy()->addDays($day - 1);
-            if($currentDay->isWeekday() && $daysAdded < $daysPerMonth) {
-                
+            if($currentDay->isWeekday() && $daysAdded < $currentDays) {
                 
                 if ($useComplexPattern) {
                     $pattern = $complexPatterns[$daysAdded];

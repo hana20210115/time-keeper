@@ -1,58 +1,118 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 勤怠管理アプリ（Time-Keeper）
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+従業員の毎日の打刻（出勤・退勤・休憩）から、管理者による勤怠データの確認・修正承認、そして労働時間の月次レポート出力までを一元管理できるシステムです。
 
-## About Laravel
+## 環境構築
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Docker（Laravel Sail）を使った環境構築手順です。
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
+### 1. リポジトリのクローンとディレクトリへの移動
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/hana20210115/time-keeper.git
+cd time-keeper
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Composerパッケージのインストール
+```bash
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php82-composer:latest \
+    composer install --ignore-platform-reqs
+```
 
-## Contributing
+### 3. 環境変数の設定
+```bash
+cp .env.example .env
+```
+※コピーして作成された `.env` ファイルをエディタで開き、以下のデータベース接続情報をSail（Docker）の初期設定に合わせて修正してください。
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```env
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=time_keeper
+DB_USERNAME=sail
+DB_PASSWORD=password
+```
 
-## Code of Conduct
+### 4. Dockerコンテナのビルドと起動
+```bash
+./vendor/bin/sail up -d --build
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 5. アプリケーションキーの生成
+```bash
+./vendor/bin/sail artisan key:generate
+```
 
-## Security Vulnerabilities
+### 6. データベースのマイグレーションとシーディング
+ダミーデータ（過去の勤怠記録やテストユーザー）を生成します。
+```bash
+./vendor/bin/sail artisan migrate:fresh --seed
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## トラブル（環境構築でつまずきやすいポイント）
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+特にWindows（WSL2）環境で構築する際に発生しやすいエラーと、その解決策をまとめています。
+
+**1. Dockerコンテナのビルド途中で `exit code: 100` などのエラーが出て中断してしまう**
+
+* **原因:** Windows (WSL2) 環境に関して、パッケージダウンロード時にセキュリティ通信（TLS）のパケットサイズが大きくて通信が遮断されてしまうネットワークのバグ（MTU問題）が原因の可能性が高いです。
+* **解決策:** Ubuntuのターミナルで以下のコマンドを実行し、通信道路サイズ（MTU）を調整してから、再度ビルドを実行してください。
+
+```bash
+# 1. 通信サイズを調整する（パスワードを求められたらUbuntuのパスワードを入力）
+sudo ip link set dev eth0 mtu 1350
+
+# 2. キャッシュを使わずに再ビルドする
+./vendor/bin/sail build --no-cache
+./vendor/bin/sail up -d
+```
+
+---
+
+## テスト用アカウント（シーディング済み）
+
+動作確認の際は、用途に合わせて以下のテスト用アカウントをご利用ください。
+
+**【一般ユーザー（打刻・修正申請・レポート閲覧）】**
+* メールアドレス: `user1@example.com`
+* パスワード: `password`
+
+**【一般ユーザー(勤怠データは空・勤怠打刻用)】**
+* メールアドレス: `user2@example.com`
+* パスワード:`password`
+
+**【管理者ユーザー（全社員の勤怠確認・修正承認）】**
+* メールアドレス: `user3@example.com`
+* パスワード: `password`
+
+---
+
+## 利用技術(実行環境)
+
+* PHP 8.x
+* Laravel 10.x
+* MySQL 8.x
+* Laravel Sail (Docker)
+* PHPUnit (単体・機能テスト)
+* Tailwind CSS
+
+---
+
+## ER図
+![ER図](./images/er_diagram.png)
+
+
+---
+
+## 主なURL
+
+* **ログイン / 新規登録:** `http://localhost/login`
+* **打刻画面（一般）:** `http://localhost/`
+* **勤怠一覧画面（管理者）:** `http://localhost/admin/staff/list`
+* **修正申請一覧（管理者）:** `http://localhost/admin/stamp_correction_request/list`
