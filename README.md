@@ -47,7 +47,14 @@ DB_PASSWORD=password
 ./vendor/bin/sail artisan key:generate
 ```
 
-### 6. データベースのマイグレーションとシーディング
+### 6. Vite（npmパッケージ）のインストールとビルド
+フロントエンドのスタイル（Tailwind CSSなど）を適用するために必須の作業です。
+```bash
+./vendor/bin/sail npm install
+./vendor/bin/sail npm run build
+```
+
+### 7. データベースのマイグレーションとシーディング
 ダミーデータ（過去の勤怠記録やテストユーザー）を生成します。
 ```bash
 ./vendor/bin/sail artisan migrate:fresh --seed
@@ -96,7 +103,7 @@ sudo ip link set dev eth0 mtu 1350
 ## 利用技術(実行環境)
 
 * PHP 8.x
-* Laravel 10.x
+* Laravel 13.x
 * MySQL 8.x
 * Laravel Sail (Docker)
 * PHPUnit (単体・機能テスト)
@@ -112,7 +119,7 @@ sudo ip link set dev eth0 mtu 1350
 
 ## 主なURL
 
-* **ログイン / 新規登録:** `http://localhost/login`
-* **打刻画面（一般）:** `http://localhost/`
+* **ログイン(一般ユーザー) / 新規登録:** `http://localhost/`
+* **打刻画面（一般）:** `http://localhost/attendance`
+* **ログイン（管理者）:** `http://localhost/admin/login`
 * **勤怠一覧画面（管理者）:** `http://localhost/admin/staff/list`
-* **修正申請一覧（管理者）:** `http://localhost/admin/stamp_correction_request/list`
