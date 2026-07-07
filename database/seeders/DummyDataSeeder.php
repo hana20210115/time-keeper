@@ -26,8 +26,9 @@ class DummyDataSeeder extends Seeder
         $now = Carbon::now();
 
         $this->generateUserAttendances($user1->id, 5, 15, 17, true, $now);
-        $this->generateUserAttendances($user2->id, 3, 10, 10, false, $now);
-        $this->generateUserAttendances($user3->id, 1, 5, 5, false, $now);
+        
+        //$this->generateUserAttendances($user2->id, 3, 10, 10, false, $now);
+        //$this->generateUserAttendances($user3->id, 1, 5, 5, false, $now);
     }
 
     private function generateUserAttendances($userId, $monthsBack, $pastDays, $currentDays, $useComplexPattern, $now)
@@ -79,6 +80,7 @@ class DummyDataSeeder extends Seeder
             'date' => $dateStr,
             'start_time' => $dateStr . ' ' . $startTime . ':00',
             'end_time' => $dateStr . ' ' . $endTime . ':00',
+            'status' => 3,
         ]);
         Rest::create([
             'attendance_id' => $attendance->id,

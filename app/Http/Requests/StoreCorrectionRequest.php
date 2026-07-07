@@ -61,8 +61,8 @@ class StoreCorrectionRequest extends FormRequest
             'rests.*.end.after'         => '休憩時間もしくは退勤時間が不適切な値です',
             'rests.*.end.before'        => '休憩時間もしくは退勤時間が不適切な値です',
 
-            'reason.required' => '備考を記入して下さい',
-            'reason.max'      => '備考は255文字以内で入力して下さい',
+            'reason.required' => '備考を記入してください',
+            'reason.max'      => '備考は255文字以内で入力してください',
         ];
     }
 }

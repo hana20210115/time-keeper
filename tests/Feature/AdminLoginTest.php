@@ -25,7 +25,7 @@ class AdminLoginTest extends TestCase
         $this->post('/login',[
             'email' => '',
             'password' => 'password',
-        ])->assertSessionHasErrors(['email' => 'メールアドレスを入力して下さい']);
+        ])->assertSessionHasErrors(['email' => 'メールアドレスを入力してください']);
         
 
         
@@ -34,7 +34,7 @@ class AdminLoginTest extends TestCase
         $this->post('/login',[
             'email' => 'admin-test@example.com',
             'password' => '',
-        ])->assertSessionHasErrors(['password'=>'パスワードを入力して下さい']);
+        ])->assertSessionHasErrors(['password'=>'パスワードを入力してください']);
 
         //登録内容と一致しない
         $this->post('/login',[

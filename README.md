@@ -119,7 +119,8 @@ sudo ip link set dev eth0 mtu 1350
 
 ## 主なURL
 
-* **ログイン(一般ユーザー) / 新規登録:** `http://localhost/`
-* **打刻画面（一般）:** `http://localhost/attendance`
-* **ログイン（管理者）:** `http://localhost/admin/login`
-* **勤怠一覧画面（管理者）:** `http://localhost/admin/staff/list`
+* **会員登録画面:** <http://localhost/register>
+* **ログイン(一般ユーザー) / 新規登録:** <http://localhost/login>
+* **打刻画面（一般）:** <http://localhost/attendance>
+* **ログイン（管理者）:** <http://localhost/admin/login>
+* **勤怠一覧画面（管理者）:** <http://localhost/admin/staff/list>
