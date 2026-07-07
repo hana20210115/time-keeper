@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Requests\Api\V1\StoreAttendanceRecordRequest;
-use Illuminate\Http\Request;
 use App\Http\Resources\AttendanceRecordResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Models\Attendance;

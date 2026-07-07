@@ -106,7 +106,7 @@ class AttendanceCorrectionTest extends TestCase
         ]);
 
         
-        $response->assertSessionHasErrors(['reason' => '備考を記入して下さい']);
+        $response->assertSessionHasErrors(['reason' => '備考を記入してください']);
     }
 
     public function test_修正申請が実行され管理者の画面に表示される(): void

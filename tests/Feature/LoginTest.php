@@ -22,13 +22,13 @@ class LoginTest extends TestCase
         $this->post('/login',[
             'email'=>'',
             'password'=>'password123',
-        ])->assertSessionHasErrors(['email'=>'メールアドレスを入力して下さい']);
+        ])->assertSessionHasErrors(['email'=>'メールアドレスを入力してください']);
 
         //パスワード未入力
         $this->post('/login',[
             'email'=>'test7@example.com',
             'password'=>'',
-        ])->assertSessionHasErrors(['password'=>'パスワードを入力して下さい']);
+        ])->assertSessionHasErrors(['password'=>'パスワードを入力してください']);
 
         // 登録内容と一致しない
         $this->post('/login',[

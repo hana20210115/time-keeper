@@ -20,7 +20,7 @@ class RegistrationTest extends TestCase
             'email'=>'test@example.com',
             'password'=>'password123',
             'password_confirmation' =>'password123',
-        ])->assertSessionHasErrors(['name'=>'お名前を入力して下さい。']);
+        ])->assertSessionHasErrors(['name'=>'お名前を入力してください']);
 
         // メールアドレスが未入力
         $this->post('/register',[
@@ -28,7 +28,7 @@ class RegistrationTest extends TestCase
         'email'=>'',
         'password'=>'password123',
         'password_confirmation' =>'password123',
-        ])->assertSessionHasErrors(['email'=>'メールアドレスを入力して下さい。']);
+        ])->assertSessionHasErrors(['email'=>'メールアドレスを入力してください']);
         
         // パスワードが8文字未満
         $this->post('/register', [
@@ -36,7 +36,7 @@ class RegistrationTest extends TestCase
             'email' => 'test@example.com',
             'password' => '1234567',
             'password_confirmation' => '1234567',
-        ])->assertSessionHasErrors(['password' => 'パスワードは8文字以上で入力して下さい。']);
+        ])->assertSessionHasErrors(['password' => 'パスワードは8文字以上で入力してください']);
 
         // パスワード不一致
         $this->post('/register', [
@@ -44,7 +44,7 @@ class RegistrationTest extends TestCase
             'email' => 'test@example.com',
             'password' => 'password123',
             'password_confirmation' => 'password',
-        ])->assertSessionHasErrors(['password' => 'パスワードと一致しません。']);
+        ])->assertSessionHasErrors(['password' => 'パスワードと一致しません']);
     
         // パスワードが未入力
         // 3. パスワードが8文字未満
@@ -53,7 +53,7 @@ class RegistrationTest extends TestCase
             'email' => 'test@example.com',
             'password' => '',
             'password_confirmation' => '',
-        ])->assertSessionHasErrors(['password' => 'パスワードを入力して下さい。']);
+        ])->assertSessionHasErrors(['password' => 'パスワードを入力してください']);
     }
 
 

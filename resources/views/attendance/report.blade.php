@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
+@section('bg-color', 'bg-white')
+
 @section('content')
-<div class="max-w-5xl mx-auto w-full px-4">
+<div class="max-w-5xl mx-auto w-full px-4 py-8">
 
     <div class="mb-8">
         <h2 class="text-2xl font-bold tracking-widest text-black mb-4">マイ勤怠レポート</h2>
@@ -39,7 +41,7 @@
                 </thead>
                 <tbody>
                     @foreach ($viewData['monthly_data'] as $data)
-                    <tr class="border-b border-gray-200">
+                    <tr class="border-b border-gray-200 last:border-b-0">
                         <td class="py-4 px-2 text-sm font-bold text-black">{{ $data['month'] }}</td>
                         <td class="py-4 px-2 text-sm font-bold text-black">{{ $data['work_time'] }}</td>
                         <td class="py-4 px-2 text-sm font-bold text-black">{{ $data['overtime'] }}</td>

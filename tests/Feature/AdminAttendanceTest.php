@@ -77,7 +77,7 @@ class AdminAttendanceTest extends TestCase
             'reason' => ''
         ]);
 
-        $response->assertSessionHasErrors(['reason' => '備考を記入して下さい']);
+        $response->assertSessionHasErrors(['reason' => '備考を記入してください']);
     }
 
     public function test_管理者画面に選択した勤怠情報が表示されるか検証(): void
